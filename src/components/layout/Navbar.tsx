@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/popover";
 import { ModeToggle } from "./ModeToggler";
 import { Link } from "react-router";
+import { useState } from "react";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -24,6 +25,7 @@ const navigationLinks = [
 ];
 
 export default function Component() {
+  const [active, setActive] = useState(false);
   return (
     <header className="border-b px-4 md:px-6 sticky top-0 z-50 bg-background">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -70,7 +72,7 @@ export default function Component() {
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink href={link.href} className="py-1.5">
-                        {link.label}  
+                        {link.label}
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -89,12 +91,13 @@ export default function Component() {
                 {navigationLinks.map((link, index) => (
                   <div key={index}>
                     {link.role === "PUBLIC" && (
-                      <NavigationMenuItem>
+                      <NavigationMenuItem onChange={() => setActive(true)}>
                         <NavigationMenuLink
-                          href={link.href}
-                          className="text-muted-foreground hover:text-secondary py-1.5 font-medium"
+                          asChild
+                          className="text-muted-foreground hover:text-secondary py-1.5 font-medium transition-all duration-500"
+                          active={active}
                         >
-                          {link.label}
+                          <Link to={link.href}>{link.label}</Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     )}
@@ -108,7 +111,7 @@ export default function Component() {
         <div className="flex items-center gap-2">
           <ModeToggle />
           <Button asChild size="sm" className="text-sm">
-            <a href="#">Get Started</a>
+            <Link to="/login">Login</Link>
           </Button>
         </div>
       </div>
