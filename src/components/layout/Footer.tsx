@@ -1,6 +1,8 @@
 import Logo from "@/assets/icons/Logo";
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="border-t">
       <div className="mx-auto max-w-screen-xl space-y-8 px-6 py-16 lg:space-y-16">
@@ -11,8 +13,8 @@ export default function Footer() {
             </div>
 
             <p className="mt-4 max-w-xs text-muted-foreground">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non
-              cupiditate quae nam molestias.
+              Send, receive, and manage your money securely with just a tap.
+              Fast, reliable, and always in your pocket.
             </p>
 
             <ul className="text-muted-foreground mt-8 flex gap-6">
@@ -266,7 +268,7 @@ export default function Footer() {
         </div>
 
         <p className="text-xs text-center text-gray-500">
-          &copy; 2022. Tour Management. All rights reserved.
+          &copy; {year}. Digital Wallet. All rights reserved.
         </p>
       </div>
     </footer>
