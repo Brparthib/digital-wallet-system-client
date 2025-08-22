@@ -1,29 +1,31 @@
-import Logo from "@/assets/icons/Logo"
-import { Button } from "@/components/ui/button"
+import Logo from "@/assets/icons/Logo";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { ModeToggle } from "./ModeToggler"
+} from "@/components/ui/popover";
+import { ModeToggle } from "./ModeToggler";
+import { Link } from "react-router";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "#", label: "Home", active: true },
-  { href: "#", label: "Features" },
-  { href: "#", label: "Pricing" },
-  { href: "#", label: "About" },
-]
+  { href: "/", label: "Home", role: "PUBLIC" },
+  { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/features", label: "Features", role: "PUBLIC" },
+  { href: "/contact", label: "Contact", role: "PUBLIC" },
+  { href: "/faq", label: "FAQ", role: "PUBLIC" },
+];
 
 export default function Component() {
   return (
-    <header className="border-b px-4 md:px-6">
+    <header className="border-b px-4 md:px-6 sticky top-0 z-50 bg-background">
       <div className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
@@ -67,12 +69,8 @@ export default function Component() {
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink
-                        href={link.href}
-                        className="py-1.5"
-                        active={link.active}
-                      >
-                        {link.label}
+                      <NavigationMenuLink href={link.href} className="py-1.5">
+                        {link.label}  
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -82,22 +80,25 @@ export default function Component() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
+            <Link to="/" className="text-primary hover:text-primary/90">
               <Logo />
-            </a>
+            </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      active={link.active}
-                      href={link.href}
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      {link.label}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
+                  <div key={index}>
+                    {link.role === "PUBLIC" && (
+                      <NavigationMenuItem>
+                        <NavigationMenuLink
+                          href={link.href}
+                          className="text-muted-foreground hover:text-secondary py-1.5 font-medium"
+                        >
+                          {link.label}
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    )}
+                  </div>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
@@ -106,14 +107,11 @@ export default function Component() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button asChild variant="ghost" size="sm" className="text-sm">
-            <a href="#">Sign In</a>
-          </Button>
           <Button asChild size="sm" className="text-sm">
             <a href="#">Get Started</a>
           </Button>
         </div>
       </div>
     </header>
-  )
+  );
 }
