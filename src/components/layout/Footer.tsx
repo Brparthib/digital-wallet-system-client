@@ -268,7 +268,7 @@ export default function Footer() {
         </div>
 
         <p className="text-xs text-center text-gray-500">
-          &copy; {year}. Digital Wallet. All rights reserved.
+          &copy; {year}. logoipsum. All rights reserved.
         </p>
       </div>
     </footer>
