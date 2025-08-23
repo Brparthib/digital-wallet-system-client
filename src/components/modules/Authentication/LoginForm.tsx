@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -15,10 +15,12 @@ import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Password from "@/components/ui/password";
+import { useLoginMutation } from "@/redux/features/auth/auth.api";
+import { toast } from "sonner";
 
 const loginSchema = z.object({
   phone: z.string(),
-  password: z.string(),
+  password: z.string({ error: "Password is required." }),
 });
 
 export function LoginForm({
@@ -32,9 +34,24 @@ export function LoginForm({
       password: "",
     },
   });
+  const [login] = useLoginMutation();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    console.log(data);
+    const userInfo = {
+      phone: "+88" + data.phone,
+      password: data.password,
+    };
+    try {
+      const res = await login(userInfo).unwrap();
+      if (res.success) {
+        toast.success("User logged in successfully.");
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Something went wrong..!");
+      console.log(error);
+    }
   };
 
   return (

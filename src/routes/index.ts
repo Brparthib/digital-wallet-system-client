@@ -1,5 +1,8 @@
 import App from "@/App";
+import DashboardLayout from "@/components/layout/DashboardLayout";
 import About from "@/pages/About";
+import AddMoney from "@/pages/User/AddMoney";
+import Analytics from "@/pages/Admin/Analytics";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
@@ -32,6 +35,26 @@ export const router = createBrowserRouter([
       {
         Component: FAQ,
         path: "faq",
+      },
+    ],
+  },
+  {
+    Component: DashboardLayout,
+    path: "/admin",
+    children: [
+      {
+        Component: Analytics,
+        path: "analytics",
+      },
+    ],
+  },
+  {
+    Component: DashboardLayout,
+    path: "/user",
+    children: [
+      {
+        Component: AddMoney,
+        path: "add-money",
       },
     ],
   },

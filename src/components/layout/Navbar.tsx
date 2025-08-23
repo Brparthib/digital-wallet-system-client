@@ -14,6 +14,12 @@ import {
 import { ModeToggle } from "./ModeToggler";
 import { Link } from "react-router";
 import { useState } from "react";
+import {
+  authApi,
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@/redux/features/auth/auth.api";
+import { useAppDispatch } from "@/redux/hook";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -26,6 +32,19 @@ const navigationLinks = [
 
 export default function Component() {
   const [active, setActive] = useState(false);
+  const { data, isLoading } = useUserInfoQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
+    await logout(undefined);
+    dispatch(authApi.util.resetApiState());
+  };
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
   return (
     <header className="border-b px-4 md:px-6 sticky top-0 z-50 bg-background">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -110,9 +129,21 @@ export default function Component() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button asChild size="sm" className="text-sm">
-            <Link to="/login">Login</Link>
-          </Button>
+          {data?.data?.phone && (
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              size="sm"
+              className="text-sm cursor-pointer"
+            >
+              Logout
+            </Button>
+          )}
+          {!data?.data?.phone && (
+            <Button asChild size="sm" className="text-sm cursor-pointer">
+              <Link to="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>

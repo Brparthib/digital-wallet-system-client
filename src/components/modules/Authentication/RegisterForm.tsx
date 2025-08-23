@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -15,11 +15,30 @@ import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Password from "@/components/ui/password";
+import { useRegisterMutation } from "@/redux/features/auth/auth.api";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { role } from "@/assets/constants/role";
+import { toast } from "sonner";
 
 const registerSchema = z
   .object({
-    name: z.string().min(2).max(50),
-    phone: z.string(),
+    name: z
+      .string({ error: "Name must be string." })
+      .min(2, { message: "Name must be at least 2 characters." })
+      .max(50, { message: "Name cannot exceed 50 characters." }),
+    phone: z
+      .string({ error: "Phone number must be string." })
+      .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
+        message:
+          "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
+      }),
+    role: z.string({ error: "Role must be string." }),
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters long." })
@@ -48,13 +67,33 @@ export function RegisterForm({
     defaultValues: {
       name: "",
       phone: "",
+      role: "",
       password: "",
       confirmedPassword: "",
     },
   });
+  const [register] = useRegisterMutation();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-    console.log(data);
+    const toastId = toast.loading("Register User...");
+    const userInfo = {
+      name: data.name,
+      phone: data.phone,
+      role: data.role,
+      password: data.password,
+    };
+
+    try {
+      const res = await register(userInfo).unwrap();
+      if (res.success) {
+        toast.success("Register Successfully.", { id: toastId });
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong..!", { id: toastId });
+    }
   };
 
   return (
@@ -95,6 +134,33 @@ export function RegisterForm({
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your phone number
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={role.user}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select your role" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={role.user}>{role.user}</SelectItem>
+                      <SelectItem value={role.agent}>{role.agent}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription className="sr-only">
+                    You can select your role.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
