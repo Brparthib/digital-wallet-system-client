@@ -1,8 +1,6 @@
 import App from "@/App";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import About from "@/pages/About";
-import AddMoney from "@/pages/User/AddMoney";
-import Analytics from "@/pages/Admin/Analytics";
 import Contact from "@/pages/Contact";
 import FAQ from "@/pages/FAQ";
 import Features from "@/pages/Features";
@@ -10,6 +8,12 @@ import Homepage from "@/pages/Homepage";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import { createBrowserRouter } from "react-router";
+import { generateRoutes } from "@/utils/generateRoutes";
+import { adminSidebarItems } from "./adminSidebarItems";
+import { userSidebarItems } from "./userSidebarItems";
+import { withAuth } from "@/utils/withAuth";
+import { role } from "@/assets/constants/role";
+import type { TRole } from "@/types";
 
 export const router = createBrowserRouter([
   {
@@ -39,24 +43,19 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.admin as TRole),
     path: "/admin",
-    children: [
-      {
-        Component: Analytics,
-        path: "analytics",
-      },
-    ],
+    children: [...generateRoutes(adminSidebarItems)],
   },
+  // {
+  //   Component: withAuth(DashboardLayout, role.agent as TRole),
+  //   path: "/agent",
+  //   children: [...generateRoutes(userSidebarItems)],
+  // },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.user as TRole),
     path: "/user",
-    children: [
-      {
-        Component: AddMoney,
-        path: "add-money",
-      },
-    ],
+    children: [...generateRoutes(userSidebarItems)],
   },
   {
     Component: Login,
