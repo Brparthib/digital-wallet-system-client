@@ -13,6 +13,14 @@ import {
 } from "@/components/ui/popover";
 import { ModeToggle } from "./ModeToggler";
 import { Link } from "react-router";
+import { useState } from "react";
+import {
+  authApi,
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@/redux/features/auth/auth.api";
+import { useAppDispatch } from "@/redux/hook";
+import { role } from "@/assets/constants/role";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -21,9 +29,26 @@ const navigationLinks = [
   { href: "/features", label: "Features", role: "PUBLIC" },
   { href: "/contact", label: "Contact", role: "PUBLIC" },
   { href: "/faq", label: "FAQ", role: "PUBLIC" },
+  { href: "/admin", label: "Dashboard", role: role.admin },
+  { href: "/agent", label: "Dashboard", role: role.agent },
+  { href: "/user", label: "Dashboard", role: role.user },
 ];
 
 export default function Component() {
+  const [active, setActive] = useState(false);
+  const { data, isLoading } = useUserInfoQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = async () => {
+    await logout(undefined);
+    dispatch(authApi.util.resetApiState());
+  };
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
   return (
     <header className="border-b px-4 md:px-6 sticky top-0 z-50 bg-background">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -70,7 +95,7 @@ export default function Component() {
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink href={link.href} className="py-1.5">
-                        {link.label}  
+                        {link.label}
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -89,12 +114,23 @@ export default function Component() {
                 {navigationLinks.map((link, index) => (
                   <div key={index}>
                     {link.role === "PUBLIC" && (
-                      <NavigationMenuItem>
+                      <NavigationMenuItem onChange={() => setActive(true)}>
                         <NavigationMenuLink
-                          href={link.href}
-                          className="text-muted-foreground hover:text-secondary py-1.5 font-medium"
+                          asChild
+                          className="text-muted-foreground hover:text-secondary py-1.5 font-medium transition-all duration-500"
+                          active={active}
                         >
-                          {link.label}
+                          <Link to={link.href}>{link.label}</Link>
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    )}
+                    {data?.data?.phone && link.role === data?.data?.role && (
+                      <NavigationMenuItem key={index}>
+                        <NavigationMenuLink
+                          asChild
+                          className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                        >
+                          <Link to={link.href}>{link.label}</Link>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     )}
@@ -107,9 +143,21 @@ export default function Component() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-          <Button asChild size="sm" className="text-sm">
-            <a href="#">Get Started</a>
-          </Button>
+          {data?.data?.phone && (
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              size="sm"
+              className="text-sm cursor-pointer"
+            >
+              Logout
+            </Button>
+          )}
+          {!data?.data?.phone && (
+            <Button asChild size="sm" className="text-sm cursor-pointer">
+              <Link to="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
