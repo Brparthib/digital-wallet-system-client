@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/select";
 import { role } from "@/assets/constants/role";
 import { toast } from "sonner";
+import { addCountryCode } from "@/utils/addCountryCode";
 
 const registerSchema = z
   .object({
@@ -75,11 +76,12 @@ export function RegisterForm({
   const [register] = useRegisterMutation();
   const navigate = useNavigate();
 
+  const formatted = addCountryCode;
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     const toastId = toast.loading("Register User...");
     const userInfo = {
       name: data.name,
-      phone: data.phone,
+      phone: formatted(data.phone, "BD"),
       role: data.role,
       password: data.password,
     };

@@ -128,7 +128,7 @@ export default function Component() {
                       <NavigationMenuItem key={index}>
                         <NavigationMenuLink
                           asChild
-                          className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                          className="text-muted-foreground hover:text-secondary py-1.5 font-medium transition-all duration-500"
                         >
                           <Link to={link.href}>{link.label}</Link>
                         </NavigationMenuLink>
