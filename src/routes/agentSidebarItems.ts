@@ -1,16 +1,16 @@
 import type { ISidebarItem } from "@/types";
 import { lazy } from "react";
 
-const CashIn = lazy(() => import("@/pages/Agent/Cashin"));
+const AddMoney = lazy(() => import("@/pages/Agent/AddMoney"));
 
 export const agentSidebarItems: ISidebarItem[] = [
   {
     title: "Dashboard",
     items: [
       {
-        title: "Cash-in",
-        url: "/agent/cash-in",
-        component: CashIn,
+        title: "Add Money",
+        url: "/agent/add-money",
+        component: AddMoney,
       },
     ],
   },

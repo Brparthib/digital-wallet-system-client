@@ -10,12 +10,12 @@ import Register from "@/pages/Register";
 import { createBrowserRouter } from "react-router";
 import { generateRoutes } from "@/utils/generateRoutes";
 import { adminSidebarItems } from "./adminSidebarItems";
+import { agentSidebarItems } from "./agentSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
 import { withAuth } from "@/utils/withAuth";
 import { role } from "@/assets/constants/role";
 import type { TRole } from "@/types";
 import { NavigateRoute } from "@/utils/NavigateRoute";
-import { agentSidebarItems } from "./agentSidebarItems";
 import Unauthorized from "@/pages/Unauthorized";
 
 export const router = createBrowserRouter([
