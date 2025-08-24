@@ -14,6 +14,9 @@ import { userSidebarItems } from "./userSidebarItems";
 import { withAuth } from "@/utils/withAuth";
 import { role } from "@/assets/constants/role";
 import type { TRole } from "@/types";
+import { NavigateRoute } from "@/utils/NavigateRoute";
+import { agentSidebarItems } from "./agentSidebarItems";
+import Unauthorized from "@/pages/Unauthorized";
 
 export const router = createBrowserRouter([
   {
@@ -45,13 +48,16 @@ export const router = createBrowserRouter([
   {
     Component: withAuth(DashboardLayout, role.admin as TRole),
     path: "/admin",
-    children: [...generateRoutes(adminSidebarItems)],
+    children: [
+      { index: true, element: NavigateRoute("/admin/analytics") },
+      ...generateRoutes(adminSidebarItems),
+    ],
   },
-  // {
-  //   Component: withAuth(DashboardLayout, role.agent as TRole),
-  //   path: "/agent",
-  //   children: [...generateRoutes(userSidebarItems)],
-  // },
+  {
+    Component: withAuth(DashboardLayout, role.agent as TRole),
+    path: "/agent",
+    children: [...generateRoutes(agentSidebarItems)],
+  },
   {
     Component: withAuth(DashboardLayout, role.user as TRole),
     path: "/user",
@@ -64,5 +70,9 @@ export const router = createBrowserRouter([
   {
     Component: Register,
     path: "/register",
+  },
+  {
+    Component: Unauthorized,
+    path: "/unauthorized",
   },
 ]);

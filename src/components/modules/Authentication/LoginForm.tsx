@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Password from "@/components/ui/password";
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
+import { addCountryCode } from "@/utils/addCountryCode";
 
 const loginSchema = z.object({
   phone: z.string(),
@@ -37,11 +38,13 @@ export function LoginForm({
   const [login] = useLoginMutation();
   const navigate = useNavigate();
 
+  const formatted = addCountryCode;
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     const userInfo = {
-      phone: "+88" + data.phone,
+      phone: formatted(data.phone, "BD"),
       password: data.password,
     };
+
     try {
       const res = await login(userInfo).unwrap();
       if (res.success) {
