@@ -1,26 +1,26 @@
 import { baseApi } from "@/redux/baseApi";
 
-export const agentApi = baseApi.injectEndpoints({
+export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    cashIn: builder.mutation({
+    sendMoney: builder.mutation({
       query: (payload) => ({
-        url: "/wallet/cash-in",
+        url: "/wallet/send-money",
         method: "POST",
         data: payload,
       }),
-      invalidatesTags: ["AGENT"],
+      invalidatesTags: ["USER"],
     }),
     // getTransactions: builder.query({
     //   query: () => ({
     //     url: "/transaction/my-transaction",
     //     method: "GET",
     //   }),
-    //   providesTags: ["USER", "AGENT"],
+    //   providesTags: ["USER"],
     // }),
   }),
 });
 
-export const {
-  useCashInMutation,
-  // useGetTransactionsQuery
-} = agentApi;
+export const { 
+    useSendMoneyMutation, 
+    // useGetTransactionsQuery 
+} = userApi;

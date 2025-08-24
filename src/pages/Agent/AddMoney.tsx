@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,6 +22,7 @@ import { useCashInMutation } from "@/redux/features/agent/agent.api";
 import { addCountryCode } from "@/utils/addCountryCode";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import z from "zod";
 
@@ -38,6 +40,7 @@ export default function AddMoney() {
     },
   });
   const [cashIn] = useCashInMutation();
+  const navigate = useNavigate();
 
   const formatted = addCountryCode;
   const onSubmit = async (data: z.infer<typeof addMoneySchema>) => {
@@ -52,6 +55,7 @@ export default function AddMoney() {
       if (res.success) {
         toast.success("Cash in successfully", { id: toastId });
       }
+      navigate("/agent/my-transactions");
     } catch (error: any) {
       console.error(error);
       toast.error(error.data.message, { id: toastId });
