@@ -2,6 +2,7 @@ import { baseApi } from "@/redux/baseApi";
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    //send money to other user
     sendMoney: builder.mutation({
       query: (payload) => ({
         url: "/wallet/send-money",
@@ -10,17 +11,16 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["USER"],
     }),
-    // getTransactions: builder.query({
-    //   query: () => ({
-    //     url: "/transaction/my-transaction",
-    //     method: "GET",
-    //   }),
-    //   providesTags: ["USER"],
-    // }),
+    // withdraw money by agent
+    cashOut: builder.mutation({
+      query: (payload) => ({
+        url: "/wallet/cash-out",
+        method: "POST",
+        data: payload,
+      }),
+      invalidatesTags: ["USER"],
+    }),
   }),
 });
 
-export const { 
-    useSendMoneyMutation, 
-    // useGetTransactionsQuery 
-} = userApi;
+export const { useSendMoneyMutation, useCashOutMutation } = userApi;
