@@ -10,6 +10,20 @@ export const transactionApi = baseApi.injectEndpoints({
     //   }),
     //   invalidatesTags: ["USER"],
     // }),
+    getAllTransactions: builder.query({
+      query: (params) => ({
+        url: "/transaction/all-transaction",
+        method: "GET",
+        params,
+      }),
+      providesTags: ["USER", "AGENT", "ADMIN"],
+      transformResponse: (response) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
+    }),
     getTransactions: builder.query({
       query: (params) => ({
         url: "/transaction/my-transaction",
@@ -27,4 +41,5 @@ export const transactionApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetTransactionsQuery } = transactionApi;
+export const { useGetTransactionsQuery, useGetAllTransactionsQuery } =
+  transactionApi;
