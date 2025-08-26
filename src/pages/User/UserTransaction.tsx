@@ -35,7 +35,7 @@ export default function UserTransaction() {
   const pages = Array.from({ length: totalPage }, (_, index) => index + 1);
 
   return (
-    <div className="w-full">
+    <div className="w-full p-6">
       <div className="flex justify-between items-center mb-5">
         <h4 className="text-xl font-bold">My Transaction</h4>
         <div>

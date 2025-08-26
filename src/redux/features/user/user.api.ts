@@ -20,7 +20,19 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["USER"],
     }),
+    getUserTransactionStats: builder.query({
+      query: (params) => ({
+        url: "/stats/user-transactions",
+        method: "GET",
+        params,
+      }),
+      providesTags: ["USER"],
+    }),
   }),
 });
 
-export const { useSendMoneyMutation, useCashOutMutation } = userApi;
+export const {
+  useSendMoneyMutation,
+  useCashOutMutation,
+  useGetUserTransactionStatsQuery,
+} = userApi;
