@@ -36,7 +36,10 @@ import {
 import { role } from "@/assets/constants/role";
 import { Textarea } from "@/components/ui/textarea";
 import Password from "@/components/ui/password";
-import { useUserInfoQuery, useUserInfoUpdateMutation } from "@/redux/features/user/user.api";
+import {
+  useUserInfoQuery,
+  useUserInfoUpdateMutation,
+} from "@/redux/features/user/user.api";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").optional(),
@@ -78,45 +81,38 @@ export default function Profile() {
   const onSubmit = async (data: z.infer<typeof profileSchema>) => {
     const toastId = toast.loading("Updating profile...");
 
-    // const updatedInfo = data.password
-    //   ? {
-    //       name: data.name || user.name,
-    //       email: data.email || user.email,
-    //       role: data.role || user.role,
-    //       address: data.address || user.address,
-    //       password: data.password,
-    //     }
-    //   : {
-    //       name: data.name || user.name,
-    //       email: data.email || user.email,
-    //       role: data.role || user.role,
-    //       address: data.address || user.address,
-    //     };
-
     const updatedInfo = {
-      name: data.name ?? user.name,
-      ...{ email: data.email ?? user.email },
-      role: data.role ?? user.role,
-      address: data.address ?? user.address,
-      ...{ password: data.password ?? {} },
+      name: data.name || user.name,
+      email: data.email || user.email,
+      role: data.role || user.role,
+      address: data.address || user.address,
+      password: data.password,
     };
+
+    if (updatedInfo.password === "") {
+      delete updatedInfo.password;
+    }
+
+    if (updatedInfo.email === "") {
+      delete updatedInfo.email;
+    }
 
     console.log(updatedInfo);
 
-    // try {
-    //   const res = await userInfoUpdate({
-    //     id: user._id,
-    //     userInfo: updatedInfo,
-    //   }).unwrap();
-    //   if (res.success) {
-    //     console.log(res);
-    //     toast.success("Profile updated successfully!", { id: toastId });
-    //   }
-    // } catch (error: any) {
-    //   toast.error(error?.data?.message || "Failed to update profile", {
-    //     id: toastId,
-    //   });
-    // }
+    try {
+      const res = await userInfoUpdate({
+        id: user._id,
+        userInfo: updatedInfo,
+      }).unwrap();
+      if (res.success) {
+        console.log(res);
+        toast.success("Profile updated successfully!", { id: toastId });
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to update profile", {
+        id: toastId,
+      });
+    }
   };
 
   if (isLoading) {
@@ -129,8 +125,8 @@ export default function Profile() {
 
   return (
     <div className="container mx-auto p-6">
-      <Card className="bg-background text-foreground">
-        <CardHeader className="relative bg-muted/50 dark:bg-muted/30 rounded-t-lg">
+      <Card className="bg-background text-foreground p-0">
+        <CardHeader className="bg-muted/50 dark:bg-muted/30 py-6">
           <div className="flex items-center space-x-4">
             <Avatar className="w-24 h-24 border-4 border-background shadow-md">
               <AvatarImage
@@ -146,7 +142,7 @@ export default function Profile() {
           </div>
         </CardHeader>
 
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
           {/* Left Column: Read-only Profile Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-primary">
@@ -307,7 +303,7 @@ export default function Profile() {
                 <Button
                   type="submit"
                   disabled={isUpdating}
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground transition-colors cursor-pointer"
                 >
                   {isUpdating ? "Updating..." : "Save Changes"}
                 </Button>

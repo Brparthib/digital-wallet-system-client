@@ -1,7 +1,9 @@
-import { transactionType } from "@/assets/constants/transactionType";
+"use client";
+
 import TableSkeleton from "@/components/loader/TableSkeleton";
 import PaginationButtons from "@/components/PaginationButtons";
-import SearchInput from "@/components/SearchInput";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -23,47 +25,85 @@ import { useGetAllTransactionsQuery } from "@/redux/features/transaction/transac
 import type { ITransaction } from "@/types";
 import { useState } from "react";
 
+const searchFields = ["transactionId", "type", "status", "fromUser", "toUser"];
+
 export default function AllTransactions() {
-  const [typeFilter, setTypeFilter] = useState<string>();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const query = { type: typeFilter, page: currentPage, limit: 3 };
+  // search state
+  const [searchField, setSearchField] = useState<string>("transactionId");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [appliedSearch, setAppliedSearch] = useState<{
+    field: string;
+    value: string;
+  }>();
+
+  const query = {
+    page: currentPage,
+    limit: 3,
+    ...(appliedSearch ? { [appliedSearch.field]: appliedSearch.value } : {}),
+  };
 
   const { data, isLoading } = useGetAllTransactionsQuery(query);
 
-  const totalPage = data?.meta?.totalPage;
-
+  const totalPage = data?.meta?.totalPage || 1;
   const pages = Array.from({ length: totalPage }, (_, index) => index + 1);
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      setAppliedSearch({ field: searchField, value: searchTerm.trim() });
+      setCurrentPage(1);
+      console.log(appliedSearch?.value);
+    } else {
+      setAppliedSearch(undefined);
+    }
+  };
 
   return (
     <div className="w-full">
-      <div className="flex-row space-y-4 md:flex md:space-y-0 justify-between items-center mb-5">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
         <h4 className="text-xl font-bold">All Transactions</h4>
-        <div>
-          <SearchInput />
-        </div>
-        <div>
-          <Select onValueChange={(value) => setTypeFilter(value)}>
-            <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder="Select a type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Type</SelectLabel>
-                <SelectItem value={transactionType.add}>
-                  {transactionType.add}
-                </SelectItem>
-                <SelectItem value={transactionType.send}>
-                  {transactionType.send}
-                </SelectItem>
-                <SelectItem value={transactionType.withdraw}>
-                  {transactionType.withdraw}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+
+        <div className="flex gap-2 justify-end">
+          {/* category select */}
+          <div>
+            <Select
+              onValueChange={(value) => setSearchField(value)}
+              value={searchField}
+            >
+              <SelectTrigger className="w-[160px]">
+                <SelectValue placeholder="Select field" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Search by</SelectLabel>
+                  {searchFields.map((field) => (
+                    <SelectItem key={field} value={field}>
+                      {field}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* search input */}
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder={`Search ${searchField}`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+              className="md:w-[300px]"
+            />
+
+            <Button onClick={handleSearch} className="cursor-pointer">
+              Search
+            </Button>
+          </div>
         </div>
       </div>
+
       <Table className="border border-muted">
         <TableHeader className="bg-sidebar-accent-foreground dark:bg-sidebar-accent">
           <TableRow>
@@ -98,6 +138,7 @@ export default function AllTransactions() {
           )}
         </TableBody>
       </Table>
+
       <PaginationButtons
         setCurrentPage={setCurrentPage}
         currentPage={currentPage}

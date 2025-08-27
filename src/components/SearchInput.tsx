@@ -1,24 +1,28 @@
-import { useState } from "react"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
-export default function SearchInput() {
-  const [search, setSearch] = useState("")
-  const [category, setCategory] = useState("")
+interface SearchInputProps {
+  onSearch?: (field: string, value: string) => void;
+}
+
+export default function SearchInput({ onSearch }: SearchInputProps) {
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
 
   const handleSearch = async () => {
-    const params = new URLSearchParams()
-    if (category) params.append("category", category)
-    if (search) params.append("query", search)
-
-    const url = `/api/search?${params.toString()}`
-    console.log("Final API URL:", url)
-
-    const res = await fetch(url)
-    const data = await res.json()
-    console.log("Search Results:", data)
-  }
+    if (onSearch) {
+      onSearch(category, search);
+      return;
+    }
+  };
 
   return (
     <div className="flex gap-2">
@@ -45,5 +49,5 @@ export default function SearchInput() {
       {/* Search Button */}
       <Button onClick={handleSearch}>Search</Button>
     </div>
-  )
+  );
 }
