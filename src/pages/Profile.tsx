@@ -18,10 +18,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {
-  useUserInfoQuery,
-  useUserInfoUpdateMutation,
-} from "@/redux/features/auth/auth.api";
+
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Phone, MapPin, Shield, Clock } from "lucide-react";
@@ -39,6 +36,7 @@ import {
 import { role } from "@/assets/constants/role";
 import { Textarea } from "@/components/ui/textarea";
 import Password from "@/components/ui/password";
+import { useUserInfoQuery, useUserInfoUpdateMutation } from "@/redux/features/user/user.api";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").optional(),

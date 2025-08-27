@@ -16,7 +16,7 @@ import { Link } from "react-router";
 import { useState } from "react";
 import { role } from "@/assets/constants/role";
 import LoginLogoutButton from "./LoginLogoutButton";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [

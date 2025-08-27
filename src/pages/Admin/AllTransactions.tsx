@@ -38,7 +38,7 @@ export default function AllTransactions() {
   return (
     <div className="w-full">
       <div className="flex-row space-y-4 md:flex md:space-y-0 justify-between items-center mb-5">
-        <h4 className="text-xl font-bold">My Transaction</h4>
+        <h4 className="text-xl font-bold">All Transactions</h4>
         <div>
           <SearchInput />
         </div>

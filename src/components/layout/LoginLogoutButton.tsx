@@ -3,9 +3,9 @@ import { Button } from "../ui/button";
 import {
   authApi,
   useLogoutMutation,
-  useUserInfoQuery,
 } from "@/redux/features/auth/auth.api";
 import { useAppDispatch } from "@/redux/hook";
+import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 export default function LoginLogoutButton() {
   const { data, isLoading } = useUserInfoQuery(undefined);

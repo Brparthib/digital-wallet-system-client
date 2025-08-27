@@ -28,6 +28,29 @@ export const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["USER"],
     }),
+    userInfoUpdate: builder.mutation({
+      query: ({ id, userInfo }) => ({
+        url: `/user/${id}`,
+        method: "PATCH",
+        data: userInfo,
+      }),
+      invalidatesTags: ["USER"],
+    }),
+    userInfo: builder.query({
+      query: () => ({
+        url: "/user/me",
+        method: "GET",
+      }),
+      providesTags: ["USER"],
+    }),
+    userWallet: builder.query({
+      query: (params) => ({
+        url: "/wallet",
+        method: "GET",
+        params,
+      }),
+      providesTags: ["USER"],
+    }),
   }),
 });
 
@@ -35,4 +58,7 @@ export const {
   useSendMoneyMutation,
   useCashOutMutation,
   useGetUserTransactionStatsQuery,
+  useUserInfoUpdateMutation,
+  useUserInfoQuery,
+  useUserWalletQuery
 } = userApi;

@@ -10,14 +10,30 @@ export const adminApi = baseApi.injectEndpoints({
     //   }),
     //   invalidatesTags: ["USER"],
     // }),
+    // toggleWalletStatus: builder.mutation({
+    //   query: ({ phone }) => ({
+    //     url: `/wallet/${phone}`,
+    //     method: "PATCH",
+    //   }),
+    //   //   invalidatesTags: ["USER"],
+    // }),
+    updateUserWallet: builder.mutation({
+      query: ({ phone, status }) => ({
+        url: `/wallet/${phone}`,
+        method: "PATCH",
+        data: status,
+      }),
+      //   invalidatesTags: ["USER"],
+    }),
     allUsers: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/user",
         method: "GET",
+        params,
       }),
       providesTags: ["USER"],
     }),
   }),
 });
 
-export const { useAllUsersQuery } = adminApi;
+export const { useAllUsersQuery, useUpdateUserWalletMutation } = adminApi;
