@@ -1,3 +1,4 @@
+import OverviewLoading from "@/components/loader/OverviewLoading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetAgentStatsQuery } from "@/redux/features/agent/agent.api";
 import {
@@ -19,7 +20,7 @@ export default function AgentOverview() {
   const { data: agentStats, isLoading } = useGetAgentStatsQuery(undefined);
 
   if (isLoading) {
-    return <p className="p-6">Loading...</p>; // later replace with Skeleton
+    return <OverviewLoading />;
   }
 
   const stats = agentStats?.data?.agentTransaction?.[0];

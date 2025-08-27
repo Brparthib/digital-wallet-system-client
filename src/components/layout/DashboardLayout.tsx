@@ -14,7 +14,7 @@ import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 export default function DashboardLayout() {
   const [run, setRun] = useState(false);
-  const { data } = useUserInfoQuery(undefined);
+  const { data, isLoading } = useUserInfoQuery(undefined);
   const user = data?.data;
 
   const steps: Step[] = [
@@ -49,7 +49,7 @@ export default function DashboardLayout() {
     const userVisited = localStorage.getItem(`${user?.phone}`);
     if (!userVisited) {
       setRun(true);
-      localStorage.setItem("hasVisited", "true");
+      localStorage.setItem(`${user?.phone}`, "true");
     }
   }, [user?.phone]);
 

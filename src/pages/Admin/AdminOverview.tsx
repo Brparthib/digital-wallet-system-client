@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import OverviewLoading from "@/components/loader/OverviewLoading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   useGetAllTransactionStatsQuery,
@@ -33,7 +34,7 @@ export default function AdminOverview() {
     useGetUserStatsQuery(undefined);
 
   if (transactionStatsLoading || userStatsLoading) {
-    return <p className="p-6">Loading...</p>; // later replace with Skeleton
+    return <OverviewLoading />;
   }
 
   const uStats = userStats?.data;

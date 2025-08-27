@@ -1,3 +1,4 @@
+import OverviewLoading from "@/components/loader/OverviewLoading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetUserTransactionStatsQuery } from "@/redux/features/user/user.api";
 import {
@@ -21,7 +22,7 @@ export default function UserOverView() {
   const { data, isLoading } = useGetUserTransactionStatsQuery(undefined);
 
   if (isLoading) {
-    return <p>Loading...</p>; // later replace with shadcn Skeleton
+    return <OverviewLoading />;
   }
 
   const balance = data?.data?.currentBalance?.balance;

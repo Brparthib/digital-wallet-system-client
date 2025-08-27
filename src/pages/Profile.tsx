@@ -40,6 +40,7 @@ import {
   useUserInfoQuery,
   useUserInfoUpdateMutation,
 } from "@/redux/features/user/user.api";
+import ProfileLoading from "@/components/loader/ProfileLoading";
 
 const profileSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters.").optional(),
@@ -116,11 +117,7 @@ export default function Profile() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-lg text-muted-foreground">Loading profile...</p>
-      </div>
-    );
+    return <ProfileLoading />
   }
 
   return (
