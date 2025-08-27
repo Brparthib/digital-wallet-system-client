@@ -10,7 +10,14 @@ export const agentApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["AGENT"],
     }),
+    getAgentStats: builder.query({
+      query: () => ({
+        url: "/stats/agent-transactions",
+        method: "GET",
+      }),
+      providesTags: ["AGENT"],
+    }),
   }),
 });
 
-export const { useCashInMutation } = agentApi;
+export const { useCashInMutation, useGetAgentStatsQuery } = agentApi;

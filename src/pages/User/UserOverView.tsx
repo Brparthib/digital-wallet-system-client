@@ -68,7 +68,7 @@ export default function UserOverView() {
           </CardContent>
         </Card>
         {/* Transaction Card */}
-        <Card className="bg-gradient-to-r from-green-500 to-emerald-600 text-white">
+        <Card className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <CreditCard className="w-6 h-6" /> Total Transaction Amount

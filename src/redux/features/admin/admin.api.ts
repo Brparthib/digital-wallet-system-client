@@ -33,7 +33,26 @@ export const adminApi = baseApi.injectEndpoints({
       }),
       providesTags: ["USER"],
     }),
+    getAllTransactionStats: builder.query({
+      query: () => ({
+        url: "/stats/all-transactions",
+        method: "GET",
+      }),
+      providesTags: ["USER"],
+    }),
+    getUserStats: builder.query({
+      query: () => ({
+        url: "/stats/user",
+        method: "GET",
+      }),
+      providesTags: ["USER"],
+    }),
   }),
 });
 
-export const { useAllUsersQuery, useUpdateUserWalletMutation } = adminApi;
+export const {
+  useAllUsersQuery,
+  useUpdateUserWalletMutation,
+  useGetAllTransactionStatsQuery,
+  useGetUserStatsQuery,
+} = adminApi;

@@ -21,10 +21,9 @@ export const userApi = baseApi.injectEndpoints({
       invalidatesTags: ["USER"],
     }),
     getUserTransactionStats: builder.query({
-      query: (params) => ({
+      query: () => ({
         url: "/stats/user-transactions",
         method: "GET",
-        params,
       }),
       providesTags: ["USER"],
     }),
