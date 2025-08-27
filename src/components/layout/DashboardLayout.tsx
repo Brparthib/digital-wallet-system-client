@@ -14,7 +14,7 @@ import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 export default function DashboardLayout() {
   const [run, setRun] = useState(false);
-  const { data, isLoading } = useUserInfoQuery(undefined);
+  const { data } = useUserInfoQuery(undefined);
   const user = data?.data;
 
   const steps: Step[] = [
