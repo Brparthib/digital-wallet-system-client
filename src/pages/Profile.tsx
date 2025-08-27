@@ -124,7 +124,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="profile container mx-auto p-6">
       <Card className="bg-background text-foreground p-0">
         <CardHeader className="bg-muted/50 dark:bg-muted/30 py-6">
           <div className="flex items-center space-x-4">

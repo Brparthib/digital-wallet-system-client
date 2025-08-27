@@ -27,12 +27,8 @@ export default function UserOverView() {
   const balance = data?.data?.currentBalance?.balance;
   const stats = data?.data?.userTransaction?.[0];
 
-  console.log(stats);
-
   const totalTransactionAmount = stats?.allTransactions?.totalTransaction;
   const totalTransactionCount = stats?.allTransactions?.count;
-
-  console.log(totalTransactionAmount, totalTransactionCount);
 
   const sendMoney = stats?.sendMoney?.totalSent;
   const sendCount = stats?.sendMoney?.count;
@@ -54,7 +50,7 @@ export default function UserOverView() {
   ];
 
   return (
-    <div className="p-6 space-y-6 w-full">
+    <div className="overview p-6 space-y-6 w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Balance Card */}
         <Card className="bg-gradient-to-r from-green-500 to-emerald-600 text-white">
@@ -71,7 +67,8 @@ export default function UserOverView() {
         <Card className="bg-gradient-to-r from-yellow-500 to-orange-600 text-white">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <CreditCard className="w-6 h-6" /> Total Transaction Amount
+              <CreditCard className="w-6 h-6" /> Total Transaction Amount (
+              {totalTransactionCount})
             </CardTitle>
           </CardHeader>
           <CardContent>

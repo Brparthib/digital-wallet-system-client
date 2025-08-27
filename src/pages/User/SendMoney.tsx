@@ -67,7 +67,7 @@ export default function SendMoney() {
     }
   };
   return (
-    <div className="mx-auto w-full md:w-1/2">
+    <div className="sendMoney mx-auto w-full md:w-1/2">
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-bold">Send Money</CardTitle>

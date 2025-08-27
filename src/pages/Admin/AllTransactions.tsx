@@ -64,7 +64,7 @@ export default function AllTransactions() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
         <h4 className="text-xl font-bold">All Transactions</h4>
 
-        <div className="flex gap-2 justify-end">
+        <div className="space-y-4 sm:space-y-0 sm:flex gap-2 justify-end">
           {/* category select */}
           <div>
             <Select
