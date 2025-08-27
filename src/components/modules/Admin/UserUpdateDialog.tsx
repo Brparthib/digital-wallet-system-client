@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +21,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-// import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -36,49 +33,51 @@ import {
   useUserWalletQuery,
 } from "@/redux/features/user/user.api";
 import { useUpdateUserWalletMutation } from "@/redux/features/admin/admin.api";
-import type { IUser } from "@/types";
+import type { Approval, IUser, TStatus, TWalletStatus } from "@/types";
 import { Edit } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 // ✅ Schema for form validation
 const formSchema = z.object({
-  status: z.enum(["ACTIVE", "BLOCKED"]),
-  approval: z.enum(["APPROVED", "SUSPEND"]),
-  walletStatus: z.enum(["BLOCKED", "UNBLOCKED"]),
+  status: z.enum(["ACTIVE", "BLOCKED"]).optional(),
+  approval: z.enum(["APPROVED", "SUSPEND"]).optional(),
+  walletStatus: z.enum(["BLOCKED", "UNBLOCKED"]).optional(),
 });
 
 export function UserUpdateDialog({ userData }: { userData: IUser }) {
   const [open, setOpen] = useState(false);
-  const { _id, phone, status, approval } = userData;
+  const { _id, name, phone, status, approval } = userData;
 
-  const { data: walletData } = useUserWalletQuery({
-    phone: phone,
-    fields: "status, -_id",
-  });
+  const { data: walletData, isLoading: loadingWalletStatus } =
+    useUserWalletQuery({
+      phone: phone,
+      fields: "status, -_id",
+    });
 
   const [userInfoUpdate, { isLoading: isUpdating }] =
     useUserInfoUpdateMutation();
   const [updateUserWallet, { isLoading: walletLoading }] =
     useUpdateUserWalletMutation();
 
-  const walletStatus = walletData?.data?.[0]?.status || "UNBLOCKED";
+  const walletStatus = walletData?.data?.[0]?.status as TWalletStatus;
 
-  // ✅ Setup react-hook-form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      status: (status as "ACTIVE" | "BLOCKED") || "ACTIVE",
-      approval: (approval as "APPROVED" | "SUSPEND") || "APPROVED",
-      walletStatus: (walletStatus as "BLOCKED" | "UNBLOCKED") || "UNBLOCKED",
+      status: status as TStatus,
+      approval: approval as Approval,
+      walletStatus: walletStatus as TWalletStatus,
     },
   });
 
-  // ✅ Submit handler
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const toastId = toast.loading("Updating user...");
+    console.log(values.walletStatus);
     try {
-      await userInfoUpdate({
+      const userRes = await userInfoUpdate({
         id: _id,
         userInfo: {
           status: values.status || status,
@@ -86,19 +85,25 @@ export function UserUpdateDialog({ userData }: { userData: IUser }) {
         },
       }).unwrap();
 
-      await updateUserWallet({
+      const walletRes = await updateUserWallet({
         phone: phone,
-        status: values.walletStatus || walletStatus,
+        walletStatus: { status: values.walletStatus || walletStatus },
       }).unwrap();
 
-      toast.success("User updated successfully!", { id: toastId });
-      setOpen(false);
+      if (userRes.success && walletRes.success) {
+        toast.success("User updated successfully!", { id: toastId });
+        setOpen(false);
+      }
     } catch (err: any) {
       toast.error(err?.data?.message || "Failed to update user", {
         id: toastId,
       });
     }
   };
+
+  if (loadingWalletStatus) {
+    return <h1>loading...</h1>;
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -113,15 +118,37 @@ export function UserUpdateDialog({ userData }: { userData: IUser }) {
       <DialogContent className="sm:max-w-[450px]">
         <DialogHeader>
           <DialogTitle>Edit User</DialogTitle>
-          <DialogDescription>
-            Manage user: <span className="font-medium">{phone}</span> <br />
-            Wallet: <span className="font-medium">{walletStatus}</span>
+          <DialogDescription className="space-y-4 text-lg font-normal leading-relaxed text-gray-400 border p-4 rounded-md my-4">
+            <div className="flex flex-col gap-2">
+              <div>
+                Name: <span className="font-semibold text-primary">{name}</span>
+              </div>
+              <div>
+                Phone:{" "}
+                <span className="font-semibold text-primary">{phone}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                Wallet:
+                <Badge
+                  className={cn(
+                    "px-2 py-1 text-xs font-medium rounded-full",
+                    walletStatus === "UNBLOCKED" && "bg-green-500 text-white",
+                    walletStatus === "BLOCKED" && "bg-rose-500 text-white"
+                  )}
+                >
+                  {walletStatus}
+                </Badge>
+              </div>
+            </div>
           </DialogDescription>
         </DialogHeader>
 
-        {/* ✅ shadcn Form */}
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          <form
+            id="statusId"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="grid grid-cols-3 gap-4"
+          >
             {/* Status */}
             <FormField
               control={form.control}
@@ -134,7 +161,7 @@ export function UserUpdateDialog({ userData }: { userData: IUser }) {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
                     </FormControl>
@@ -160,7 +187,7 @@ export function UserUpdateDialog({ userData }: { userData: IUser }) {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select approval" />
                       </SelectTrigger>
                     </FormControl>
@@ -186,8 +213,8 @@ export function UserUpdateDialog({ userData }: { userData: IUser }) {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select wallet status" />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Wallet Stats" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -199,21 +226,21 @@ export function UserUpdateDialog({ userData }: { userData: IUser }) {
                 </FormItem>
               )}
             />
-
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
-              <Button
-                type="submit"
-                disabled={isUpdating || walletLoading}
-                className="bg-primary hover:bg-primary/90"
-              >
-                {isUpdating || walletLoading ? "Updating..." : "Save Changes"}
-              </Button>
-            </DialogFooter>
           </form>
         </Form>
+        <DialogFooter className="mt-5">
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button
+            form="statusId"
+            type="submit"
+            disabled={isUpdating || walletLoading}
+            className="bg-primary hover:bg-primary/90 cursor-pointer"
+          >
+            {isUpdating || walletLoading ? "Updating..." : "Save Changes"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

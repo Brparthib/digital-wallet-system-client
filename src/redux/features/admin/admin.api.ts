@@ -18,12 +18,12 @@ export const adminApi = baseApi.injectEndpoints({
     //   //   invalidatesTags: ["USER"],
     // }),
     updateUserWallet: builder.mutation({
-      query: ({ phone, status }) => ({
+      query: ({ phone, walletStatus }) => ({
         url: `/wallet/${phone}`,
         method: "PATCH",
-        data: status,
+        data: walletStatus,
       }),
-      //   invalidatesTags: ["USER"],
+      invalidatesTags: ["WALLET"],
     }),
     allUsers: builder.query({
       query: (params) => ({

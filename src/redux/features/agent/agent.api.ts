@@ -8,7 +8,7 @@ export const agentApi = baseApi.injectEndpoints({
         method: "POST",
         data: payload,
       }),
-      invalidatesTags: ["AGENT"],
+      invalidatesTags: ["AGENT", "WALLET"],
     }),
     getAgentStats: builder.query({
       query: () => ({

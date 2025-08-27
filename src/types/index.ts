@@ -96,3 +96,6 @@ export interface IUser {
   claimRole?: Role;
   createdAt?: Date;
 }
+
+export type TStatus = "ACTIVE" | "BLOCKED";
+export type TWalletStatus = "UNBLOCKED" | "BLOCKED";
