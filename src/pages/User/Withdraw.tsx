@@ -62,7 +62,7 @@ export default function Withdraw() {
     }
   };
   return (
-    <div className="mx-auto w-full md:w-1/2">
+    <div className="withdraw mx-auto w-full md:w-1/2">
       <Card>
         <CardHeader>
           <CardTitle className="text-lg font-bold">Withdraw Money</CardTitle>

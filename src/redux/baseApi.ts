@@ -4,6 +4,6 @@ import axiosBaseQuery from "./axiosBaseQuery";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: axiosBaseQuery(),
-  tagTypes: ["USER", "AGENT", "ADMIN"],
+  tagTypes: ["USER", "AGENT", "ADMIN", "WALLET"],
   endpoints: () => ({}),
 });

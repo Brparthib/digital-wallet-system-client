@@ -8,9 +8,16 @@ export const agentApi = baseApi.injectEndpoints({
         method: "POST",
         data: payload,
       }),
-      invalidatesTags: ["AGENT"],
+      invalidatesTags: ["AGENT", "WALLET"],
+    }),
+    getAgentStats: builder.query({
+      query: () => ({
+        url: "/stats/agent-transactions",
+        method: "GET",
+      }),
+      providesTags: ["AGENT"],
     }),
   }),
 });
 
-export const { useCashInMutation } = agentApi;
+export const { useCashInMutation, useGetAgentStatsQuery } = agentApi;

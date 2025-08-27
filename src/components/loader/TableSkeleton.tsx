@@ -8,17 +8,15 @@ interface TableSkeletonProps {
 
 export default function TableSkeleton({
   rows = 10,
-  columns = 5,
+  columns = 6,
 }: TableSkeletonProps) {
   return (
     <>
       {Array.from({ length: rows }).map((_, rowIndex) => (
         <TableRow key={rowIndex}>
-          {Array.from({ length: columns }).map((_, colIndex) => (
-            <TableCell key={colIndex}>
-              <Skeleton className="h-4 w-full bg-muted rounded-sm" />
+            <TableCell colSpan={columns}>
+              <Skeleton className="w-full h-5 bg-muted rounded-none" />
             </TableCell>
-          ))}
         </TableRow>
       ))}
     </>

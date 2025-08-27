@@ -1,27 +1,34 @@
 import type { ISidebarItem } from "@/types";
 import { lazy } from "react";
 
-const Analytics = lazy(() => import("@/pages/Admin/Analytics"));
+const AdminOverview = lazy(() => import("@/pages/Admin/AdminOverview"));
 const AllUser = lazy(() => import("@/pages/Admin/AllUser"));
+const AllTransactions = lazy(() => import("@/pages/Admin/AllTransactions"));
+const Profile = lazy(() => import("@/pages/Profile"));
 
 export const adminSidebarItems: ISidebarItem[] = [
   {
-    title: "Dashboard",
+    title: "Admin Dashboard",
     items: [
       {
-        title: "Analytics",
-        url: "/admin/analytics",
-        component: Analytics,
+        title: "Overview",
+        url: "/admin/overview",
+        component: AdminOverview,
       },
-    ],
-  },
-  {
-    title: "User Management",
-    items: [
       {
         title: "All User",
         url: "/admin/all-user",
         component: AllUser,
+      },
+      {
+        title: "All Transaction",
+        url: "/admin/all-transaction",
+        component: AllTransactions,
+      },
+      {
+        title: "Profile",
+        url: "/admin/profile",
+        component: Profile,
       },
     ],
   },
