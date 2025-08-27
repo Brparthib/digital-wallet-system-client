@@ -6,6 +6,7 @@ const AllTransactionOverview = lazy(
 );
 const AllUser = lazy(() => import("@/pages/Admin/AllUser"));
 const AllTransactions = lazy(() => import("@/pages/Admin/AllTransactions"));
+const Profile = lazy(() => import("@/pages/Profile"));
 
 export const adminSidebarItems: ISidebarItem[] = [
   {
@@ -25,6 +26,11 @@ export const adminSidebarItems: ISidebarItem[] = [
         title: "All Transaction",
         url: "/admin/all-transaction",
         component: AllTransactions,
+      },
+      {
+        title: "Profile",
+        url: "/admin/profile",
+        component: Profile,
       },
     ],
   },

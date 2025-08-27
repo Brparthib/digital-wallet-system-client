@@ -5,6 +5,7 @@ const UserOverView = lazy(() => import("@/pages/User/UserOverView"));
 const SendMoney = lazy(() => import("@/pages/User/SendMoney"));
 const Withdraw = lazy(() => import("@/pages/User/Withdraw"));
 const UserTransaction = lazy(() => import("@/pages/User/UserTransaction"));
+const Profile = lazy(() => import("@/pages/Profile"));
 
 export const userSidebarItems: ISidebarItem[] = [
   {
@@ -29,6 +30,11 @@ export const userSidebarItems: ISidebarItem[] = [
         title: "My Transactions",
         url: "/user/my-transactions",
         component: UserTransaction,
+      },
+      {
+        title: "Profile",
+        url: "/user/profile",
+        component: Profile,
       },
     ],
   },

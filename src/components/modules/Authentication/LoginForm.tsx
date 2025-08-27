@@ -45,14 +45,15 @@ export function LoginForm({
       password: data.password,
     };
 
+    const toastId = toast.loading("login...");
     try {
       const res = await login(userInfo).unwrap();
       if (res.success) {
-        toast.success("User logged in successfully.");
+        toast.success("User logged in successfully.", { id: toastId });
         navigate("/");
       }
     } catch (error) {
-      toast.error("Something went wrong..!");
+      toast.error("Something went wrong..!", { id: toastId });
       console.log(error);
     }
   };

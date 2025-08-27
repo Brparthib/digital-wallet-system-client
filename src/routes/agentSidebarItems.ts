@@ -6,6 +6,7 @@ const AgentTransactionOverview = lazy(
 );
 const AddMoney = lazy(() => import("@/pages/Agent/AddMoney"));
 const AgentTransaction = lazy(() => import("@/pages/Agent/AgentTransaction"));
+const Profile = lazy(() => import("@/pages/Profile"));
 
 export const agentSidebarItems: ISidebarItem[] = [
   {
@@ -25,6 +26,11 @@ export const agentSidebarItems: ISidebarItem[] = [
         title: "My Transactions",
         url: "/agent/my-transactions",
         component: AgentTransaction,
+      },
+      {
+        title: "Profile",
+        url: "/agent/profile",
+        component: Profile,
       },
     ],
   },
