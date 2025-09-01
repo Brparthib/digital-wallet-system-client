@@ -90,14 +90,14 @@ npm install
 ### 3️⃣ Environment Variables
 Create a `.env` file in the root directory and add your backend API URL:
 ```env
-VITE_API_BASE_URL=http://localhost:5000/api
+VITE_API_BASE_URL=http://localhost:5000/api/v1
 ```
 
 ### 4️⃣ Run the Project
 ```bash
 npm run dev
 ```
-Now visit 👉 [http://localhost:5173](http://localhost:5173)
+Now visit 👉 [http://localhost:3000](http://localhost:3000)
 
 ---
 
