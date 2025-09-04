@@ -1,5 +1,3 @@
-"use client";
-
 import TableSkeleton from "@/components/loader/TableSkeleton";
 import PaginationButtons from "@/components/PaginationButtons";
 import { Input } from "@/components/ui/input";
@@ -24,6 +22,7 @@ import {
 import { useGetAllTransactionsQuery } from "@/redux/features/transaction/transaction.api";
 import type { ITransaction } from "@/types";
 import { useState } from "react";
+import { addCountryCode } from "@/utils/addCountryCode";
 
 const searchFields = ["transactionId", "type", "status", "fromUser", "toUser"];
 
@@ -38,10 +37,21 @@ export default function AllTransactions() {
     value: string;
   }>();
 
+  if (appliedSearch?.field === "type" || appliedSearch?.field === "status") {
+    appliedSearch.value = appliedSearch.value.toUpperCase();
+  }
+
+  if (
+    appliedSearch?.field === "fromUser" ||
+    appliedSearch?.field === "toUser"
+  ) {
+    appliedSearch.value = addCountryCode(appliedSearch.value, "BD") as string;
+  }
+
   const query = {
+    ...(appliedSearch ? { [appliedSearch.field]: appliedSearch.value } : {}),
     page: currentPage,
     limit: 3,
-    ...(appliedSearch ? { [appliedSearch.field]: appliedSearch.value } : {}),
   };
 
   const { data, isLoading } = useGetAllTransactionsQuery(query);
@@ -110,8 +120,8 @@ export default function AllTransactions() {
             <TableHead className="w-[250px]">Transaction ID</TableHead>
             <TableHead>From</TableHead>
             <TableHead>To</TableHead>
-            <TableHead>Status</TableHead>
             <TableHead>Method</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Agent Commission</TableHead>
             <TableHead>Fee</TableHead>
             <TableHead className="text-right">Amount</TableHead>
@@ -128,8 +138,8 @@ export default function AllTransactions() {
                 </TableCell>
                 <TableCell>{item.fromUser}</TableCell>
                 <TableCell>{item.toUser}</TableCell>
-                <TableCell>{item.status}</TableCell>
                 <TableCell>{item.type}</TableCell>
+                <TableCell>{item.status}</TableCell>
                 <TableCell>{item.commission}</TableCell>
                 <TableCell>{item.fee}</TableCell>
                 <TableCell className="text-right">৳ {item.amount}</TableCell>

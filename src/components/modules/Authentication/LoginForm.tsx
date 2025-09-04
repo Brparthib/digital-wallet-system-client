@@ -107,6 +107,39 @@ export function LoginForm({
           </form>
         </Form>
         <div className="h-[1px] bg-border"></div>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <Button
+            onClick={() =>
+              onSubmit({ phone: "01234567890", password: "12345678" })
+            }
+            type="button"
+            variant="outline"
+            className="hover:text-primary cursor-pointer"
+          >
+            Admin
+          </Button>
+          <Button
+            onClick={() =>
+              onSubmit({ phone: "01234567891", password: "12345678" })
+            }
+            type="button"
+            variant="outline"
+            className="hover:text-primary cursor-pointer"
+          >
+            Agent
+          </Button>
+          <Button
+            onClick={() =>
+              onSubmit({ phone: "01234567892", password: "12345678" })
+            }
+            type="button"
+            variant="outline"
+            className="hover:text-primary cursor-pointer"
+          >
+            User
+          </Button>
+        </div>
+        <div className="h-[1px] bg-border"></div>
       </div>
       <div className="text-center text-sm">
         Don't have an account?{" "}

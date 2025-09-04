@@ -66,8 +66,8 @@ export default function AgentTransaction() {
             <TableHead className="w-[250px]">Transaction ID</TableHead>
             <TableHead>From</TableHead>
             <TableHead>To</TableHead>
-            <TableHead>Status</TableHead>
             <TableHead>Method</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Commission</TableHead>
             <TableHead className="text-right">Amount</TableHead>
           </TableRow>
@@ -83,8 +83,8 @@ export default function AgentTransaction() {
                 </TableCell>
                 <TableCell>{item.fromUser}</TableCell>
                 <TableCell>{item.toUser}</TableCell>
-                <TableCell>{item.status}</TableCell>
                 <TableCell>{item.type}</TableCell>
+                <TableCell>{item.status}</TableCell>
                 <TableCell>{item.commission}</TableCell>
                 <TableCell className="text-right">৳ {item.amount}</TableCell>
               </TableRow>
