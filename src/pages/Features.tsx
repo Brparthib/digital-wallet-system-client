@@ -56,8 +56,8 @@ export default function Features() {
   ];
 
   return (
-    <section className="py-32 px-6">
-      <div className="container mx-auto max-w-7xl">
+    <section id="features" className="py-20 md:py-32">
+      <div className="container px-4 sm:px-6">
         <p className="mb-4 text-xs text-muted-foreground md:pl-5">
           Our Core Features
         </p>

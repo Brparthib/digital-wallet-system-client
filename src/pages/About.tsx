@@ -29,8 +29,8 @@ const feature = [
 
 export default function About() {
   return (
-    <section className="py-32">
-      <div className="container mx-auto px-6 sm:px-0">
+    <section id="about" className="py-20 md:py-32">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="flex w-full flex-col items-center">
           <div className="flex flex-col items-center space-y-4 text-center sm:space-y-6 md:max-w-3xl md:text-center">
             <p className="text-sm text-muted-foreground">WHY CHOOSE US</p>

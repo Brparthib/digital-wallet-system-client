@@ -20,11 +20,11 @@ import { useUserInfoQuery } from "@/redux/features/user/user.api";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home", role: "PUBLIC" },
-  { href: "/about", label: "About", role: "PUBLIC" },
-  { href: "/features", label: "Features", role: "PUBLIC" },
-  { href: "/contact", label: "Contact", role: "PUBLIC" },
-  { href: "/faq", label: "FAQ", role: "PUBLIC" },
+  { href: "/#home", label: "Home", role: "PUBLIC" },
+  { href: "/#about", label: "About", role: "PUBLIC" },
+  { href: "/#features", label: "Features", role: "PUBLIC" },
+  { href: "/#faq", label: "FAQ", role: "PUBLIC" },
+  { href: "/#contact", label: "Contact", role: "PUBLIC" },
   { href: "/admin", label: "Dashboard", role: role.admin },
   { href: "/agent", label: "Dashboard", role: role.agent },
   { href: "/user", label: "Dashboard", role: role.user },
@@ -82,11 +82,29 @@ export default function Component() {
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink href={link.href} className="py-1.5">
-                        {link.label}
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
+                    <div key={index}>
+                      {link.role === "PUBLIC" && (
+                        <NavigationMenuItem onChange={() => setActive(true)}>
+                          <NavigationMenuLink
+                            asChild
+                            className="text-muted-foreground hover:text-secondary py-1.5 font-medium transition-all duration-500"
+                            active={active}
+                          >
+                            <Link to={link.href}>{link.label}</Link>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )}
+                      {data?.data?.phone && link.role === data?.data?.role && (
+                        <NavigationMenuItem>
+                          <NavigationMenuLink
+                            asChild
+                            className="text-muted-foreground hover:text-secondary py-1.5 font-medium transition-all duration-500"
+                          >
+                            <Link to={link.href}>{link.label}</Link>
+                          </NavigationMenuLink>
+                        </NavigationMenuItem>
+                      )}
+                    </div>
                   ))}
                 </NavigationMenuList>
               </NavigationMenu>
