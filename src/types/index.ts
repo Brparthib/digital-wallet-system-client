@@ -95,6 +95,7 @@ export interface IUser {
   auths?: IAuthProvider[];
   claimRole?: Role;
   createdAt?: Date;
+  feedback?: boolean;
 }
 
 export type TStatus = "ACTIVE" | "BLOCKED";

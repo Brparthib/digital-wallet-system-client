@@ -18,28 +18,39 @@ import Password from "@/components/ui/password";
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import { toast } from "sonner";
 import { addCountryCode } from "@/utils/addCountryCode";
+import { useState } from "react";
 
 const loginSchema = z.object({
   phone: z.string(),
   password: z.string({ error: "Password is required." }),
 });
 
+type FormValues = z.infer<typeof loginSchema>;
+
 export function LoginForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const [credentials, setCredentials] = useState<FormValues>({
+    phone: "",
+    password: "",
+  });
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      phone: "",
-      password: "",
-    },
+    defaultValues: credentials,
   });
   const [login] = useLoginMutation();
   const navigate = useNavigate();
 
+  const handleEasyLogin = (payload: FormValues) => {
+    setCredentials(payload);
+    console.log(payload);
+    form.reset(payload);
+  };
+
   const formatted = addCountryCode;
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (data: FormValues) => {
     const userInfo = {
       phone: formatted(data.phone, "BD"),
       password: data.password,
@@ -110,7 +121,7 @@ export function LoginForm({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <Button
             onClick={() =>
-              onSubmit({ phone: "01234567890", password: "12345678" })
+              handleEasyLogin({ phone: "01234567890", password: "12345678" })
             }
             type="button"
             variant="outline"
@@ -120,7 +131,7 @@ export function LoginForm({
           </Button>
           <Button
             onClick={() =>
-              onSubmit({ phone: "01234567891", password: "12345678" })
+              handleEasyLogin({ phone: "01234567891", password: "12345678" })
             }
             type="button"
             variant="outline"
@@ -130,7 +141,7 @@ export function LoginForm({
           </Button>
           <Button
             onClick={() =>
-              onSubmit({ phone: "01234567892", password: "12345678" })
+              handleEasyLogin({ phone: "01234567892", password: "12345678" })
             }
             type="button"
             variant="outline"

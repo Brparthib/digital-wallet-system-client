@@ -5,6 +5,7 @@ import Contact from "./Contact";
 import FAQ from "./FAQ";
 import { useLocation } from "react-router";
 import { useEffect } from "react";
+import Testimonial from "./Testimonial";
 
 export default function Homepage() {
   const location = useLocation();
@@ -26,6 +27,7 @@ export default function Homepage() {
       <HeroSection />
       <About />
       <Features />
+      <Testimonial />
       <FAQ />
       <Contact />
     </div>

@@ -55,7 +55,7 @@
   --popover-foreground: oklch(0.18 0.03 150);
 
   /* Primary (light green) */
-  --primary: oklch(0.82 0.23 150); /* #00DC33 */
+  --primary: oklch(75.221% 0.20743 149.962); /*  */
   --primary-foreground: oklch(0.15 0.03 150); /* very dark green for contrast */
 
   /* Secondary (deep green) */
@@ -67,7 +67,7 @@
   --muted-foreground: oklch(0.45 0.02 150);
 
   /* Accent */
-  --accent: oklch(0.82 0.23 150); /* same as primary for harmony */
+  --accent: oklch(75.221% 0.20743 149.962); /* same as primary for harmony */
   --accent-foreground: oklch(0.15 0.03 150);
 
   /* Destructive (kept reddish for clarity) */
@@ -77,10 +77,10 @@
   /* Borders, Inputs, Ring */
   --border: oklch(0.9 0.01 150);
   --input: oklch(0.9 0.01 150);
-  --ring: oklch(0.82 0.23 150);
+  --ring: oklch(75.221% 0.20743 149.962);
 
   /* Charts (green palette + supporting tones) */
-  --chart-1: oklch(0.82 0.23 150); /* bright green */
+  --chart-1: oklch(75.221% 0.20743 149.962); /* bright green */
   --chart-2: oklch(0.65 0.18 150); /* medium green */
   --chart-3: oklch(0.25 0.05 150); /* deep green */
   --chart-4: oklch(0.55 0.12 200); /* bluish contrast */
@@ -89,16 +89,16 @@
   /* Sidebar */
   --sidebar: oklch(0.98 0 0); /* light */
   --sidebar-foreground: oklch(0.18 0.03 150);
-  --sidebar-primary: oklch(0.82 0.23 150);
+  --sidebar-primary: oklch(75.221% 0.20743 149.962);
   --sidebar-primary-foreground: oklch(0.15 0.03 150);
   --sidebar-accent: oklch(0.25 0.05 150);
   --sidebar-accent-foreground: oklch(0.95 0.02 150);
   --sidebar-border: oklch(0.9 0.01 150);
-  --sidebar-ring: oklch(0.82 0.23 150);
+  --sidebar-ring: oklch(75.221% 0.20743 149.962);
 }
 
 .dark {
-  --background: oklch(0.15 0.03 150); /* deep green base */
+  --background: oklch(15.158% 0.03087 149.26); /* deep green base */
   --foreground: oklch(0.98 0 0); /* white text */
 
   --card: oklch(0.22 0.04 150);
@@ -107,7 +107,7 @@
   --popover: oklch(0.22 0.04 150);
   --popover-foreground: oklch(0.98 0 0);
 
-  --primary: oklch(0.82 0.23 150); /* bright green */
+  --primary: oklch(75.221% 0.20743 149.962); /* bright green */
   --primary-foreground: oklch(0.15 0.03 150);
 
   --secondary: oklch(0.25 0.05 150); /* deep green */
@@ -116,7 +116,7 @@
   --muted: oklch(0.28 0.04 150);
   --muted-foreground: oklch(0.75 0.02 150);
 
-  --accent: oklch(0.82 0.23 150);
+  --accent: oklch(75.221% 0.20743 149.962);
   --accent-foreground: oklch(0.15 0.03 150);
 
   --destructive: oklch(0.65 0.22 25);
@@ -124,9 +124,9 @@
 
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.82 0.23 150);
+  --ring: oklch(75.221% 0.20743 149.962);
 
-  --chart-1: oklch(0.82 0.23 150);
+  --chart-1: oklch(75.221% 0.20743 149.962);
   --chart-2: oklch(0.65 0.18 150);
   --chart-3: oklch(0.25 0.05 150);
   --chart-4: oklch(0.55 0.12 200);
@@ -134,12 +134,12 @@
 
   --sidebar: oklch(0.22 0.04 150);
   --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.82 0.23 150);
+  --sidebar-primary: oklch(75.221% 0.20743 149.962);
   --sidebar-primary-foreground: oklch(0.15 0.03 150);
   --sidebar-accent: oklch(0.25 0.05 150);
   --sidebar-accent-foreground: oklch(0.98 0 0);
   --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.82 0.23 150);
+  --sidebar-ring: oklch(75.221% 0.20743 149.962);
 }
 
 @layer base {
@@ -150,3 +150,47 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Testimonial CSS */
+/* Keep original intent, just moved from inline <style> to this file */
+
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after {
+  content: '' !important;
+}
+
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
+  content: '' !important;
+}
+
+.swiper-button-next svg,
+.swiper-button-prev svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  position: relative !important;
+  margin-top: 32px;
+}
+
+/* Active slide border color tweak */
+.swiper-slide.swiper-slide-active {
+  --tw-border-opacity: 1 !important;
+  border-color: oklch(75.221% 0.20743 149.962 / var(--tw-border-opacity)) !important;
+}
+
+/* Active slide text color targets */
+.swiper-slide.swiper-slide-active > .swiper-slide-active\:text-indigo-600 {
+  --tw-text-opacity: 1;
+  color: oklch(75.221% 0.20743 149.962 / var(--tw-text-opacity));
+}
+
+.swiper-slide.swiper-slide-active > .flex .grid .swiper-slide-active\:text-indigo-600 {
+  --tw-text-opacity: 1;
+  color: oklch(75.221% 0.20743 149.962 / var(--tw-text-opacity));
+}
+
+

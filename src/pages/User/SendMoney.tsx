@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import FeedBack from "@/components/FeedBack";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,9 +20,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useSendMoneyMutation } from "@/redux/features/user/user.api";
+import {
+  useSendMoneyMutation,
+  useUserInfoQuery,
+} from "@/redux/features/user/user.api";
 import { addCountryCode } from "@/utils/addCountryCode";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -34,6 +39,10 @@ const sendMoneySchema = z.object({
 });
 
 export default function SendMoney() {
+  const { data, isLoading } = useUserInfoQuery(undefined);
+  const userInfo = data?.data;
+  console.log("feedback: ", userInfo?.feedback);
+  const [feedback, setFeedBack] = useState(false);
   const form = useForm<z.infer<typeof sendMoneySchema>>({
     resolver: zodResolver(sendMoneySchema),
     defaultValues: {
@@ -59,13 +68,25 @@ export default function SendMoney() {
       const res = await sendMoney(payload).unwrap();
       if (res.success) {
         toast.success("Sent money successfully", { id: toastId });
+        if (!userInfo?.feedback) {
+          setFeedBack(true);
+        }
+        form.reset();
       }
-      navigate("/user/my-transactions");
+
+      if (userInfo?.feedback) {
+        navigate("/user/my-transactions");
+      }
     } catch (error: any) {
       console.error(error);
       toast.error(error.data.message, { id: toastId });
     }
   };
+
+  if (isLoading) {
+    return <h1 className="text-2xl text-red-500">Loading...</h1>;
+  }
+
   return (
     <div className="sendMoney mx-auto w-full md:w-1/2">
       <Card>
@@ -143,6 +164,7 @@ export default function SendMoney() {
           </Button>
         </CardFooter>
       </Card>
+      <FeedBack openFromParent={feedback} user={userInfo} />
     </div>
   );
 }

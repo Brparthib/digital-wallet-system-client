@@ -25,23 +25,23 @@ export default function UserOverView() {
     return <OverviewLoading />;
   }
 
-  const balance = data?.data?.currentBalance?.balance;
-  const stats = data?.data?.userTransaction?.[0];
+  const balance = data?.data?.currentBalance?.balance || 0;
+  const stats = data?.data?.userTransaction?.[0] || 0;
 
-  const totalTransactionAmount = stats?.allTransactions?.totalTransaction;
-  const totalTransactionCount = stats?.allTransactions?.count;
+  const totalTransactionAmount = stats?.allTransactions?.totalTransaction || 0;
+  const totalTransactionCount = stats?.allTransactions?.count || 0;
 
-  const sendMoney = stats?.sendMoney?.totalSent;
-  const sendCount = stats?.sendMoney?.count;
+  const sendMoney = stats?.sendMoney?.totalSent || 0;
+  const sendCount = stats?.sendMoney?.count || 0;
 
-  const receivedMoney = stats?.receivedMoney?.totalReceived;
-  const receivedCount = stats?.receivedMoney?.count;
+  const receivedMoney = stats?.receivedMoney?.totalReceived || 0;
+  const receivedCount = stats?.receivedMoney?.count || 0;
 
-  const addMoney = stats?.addMoney?.totalCashIn;
-  const addCount = stats?.addMoney?.count;
+  const addMoney = stats?.addMoney?.totalCashIn || 0;
+  const addCount = stats?.addMoney?.count || 0;
 
-  const withdrawMoney = stats?.withDraw?.totalCashOut;
-  const withdrawCount = stats?.withDraw?.count;
+  const withdrawMoney = stats?.withDraw?.totalCashOut || 0;
+  const withdrawCount = stats?.withDraw?.count || 0;
 
   const chartData = [
     { name: "Send", value: sendMoney || 0 },
